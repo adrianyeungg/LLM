@@ -1,0 +1,2 @@
+*.zip filter=lfs diff=lfs merge=lfs -text
+PythonTesting/fcc-gpt-course/openwebtext/output_train.txt filter=lfs diff=lfs merge=lfs -text
