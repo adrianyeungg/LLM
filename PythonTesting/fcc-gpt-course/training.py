@@ -19,8 +19,8 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 batch_size = int(args.batch_size)
 block_size = 128
-max_iters = 200
-learning_rate = 3e-4
+max_iters = 500
+learning_rate = 1e-3 # typical learning rate is this
 eval_iters = 100
 n_embd = 384
 n_head = 1
@@ -255,4 +255,7 @@ with open('model-01.pkl', 'wb') as f:
     pickle.dump(model, f)
 print('model saved')
 
+
 # have a function in data-extract and a call function here in training to pull from the web (web scraping)
+
+# have some sort of graph to show learning rate?

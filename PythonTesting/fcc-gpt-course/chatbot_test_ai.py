@@ -200,3 +200,4 @@ while True:
     print(f'Completion:\n{generated_chars}')
 
 # make a function here to quit the llm if done
+# for now just ctrl-c
