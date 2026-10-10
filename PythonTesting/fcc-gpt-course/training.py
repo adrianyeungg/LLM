@@ -255,3 +255,4 @@ with open('model-01.pkl', 'wb') as f:
     pickle.dump(model, f)
 print('model saved')
 
+# have a function in data-extract and a call function here in training to pull from the web (web scraping)
