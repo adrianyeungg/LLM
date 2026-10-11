@@ -9,7 +9,7 @@ import argparse
 parser = argparse.ArgumentParser(description='This is a demonstration program')
 
 # Here we add an argument to the parser, specifying the expected type, a help message, etc.
-parser.add_argument('-batch_size', type=str, required=True, help='Please provide a batch_size')
+parser.add_argument('-batch_size', type=str, required=True, help='type in a batch_size')
 
 args = parser.parse_args()
 
@@ -185,16 +185,16 @@ class GPTLanguageModel(nn.Module):
         return index
 
 model = GPTLanguageModel(vocab_size)
-print('loading model parameters...')
+print('thinking')
 with open('model-01.pkl', 'rb') as f:
     model = pickle.load(f)
-print('loaded successfully!')
+print('ready')
 m = model.to(device)
 
 
 
 while True:
-    prompt = input("Prompt:\n")
+    prompt = input("type here:\n")
     context = torch.tensor(encode(prompt), dtype=torch.long, device=device)
     generated_chars = decode(m.generate(context.unsqueeze(0), max_new_tokens=150)[0].tolist())
     print(f'Completion:\n{generated_chars}')

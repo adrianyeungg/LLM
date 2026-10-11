@@ -9,7 +9,7 @@ import argparse
 parser = argparse.ArgumentParser(description='This is a demonstration program')
 
 # Here we add an argument to the parser, specifying the expected type, a help message, etc.
-parser.add_argument('-batch_size', type=str, required=True, help='Please provide a batch_size')
+parser.add_argument('-batch_size', type=str, required=True, help='type in a batch_size')
 
 args = parser.parse_args()
 
@@ -225,10 +225,10 @@ class GPTLanguageModel(nn.Module):
         return index
 
 model = GPTLanguageModel(vocab_size)
-print('loading model parameters...')
+print('loading')
 with open('model-01.pkl', 'rb') as f:
     model = pickle.load(f)
-print('loaded successfully!')
+print('ready')
 m = model.to(device)
 
 
