@@ -5,3 +5,7 @@ how to run test_ai
 - cuda\Scripts\activate (activates the environemnt)
 - cd C:\Users\yeung\Test_AI\PythonTesting\fcc-gpt-course (get into the folder where the chatbot file is)
 - python chatbot_test_ai.py -batch_size 32 (starts the LLM)
+
+for developers
+**install pydoc for offline documentation usage:
+- python -m pydoc -b
