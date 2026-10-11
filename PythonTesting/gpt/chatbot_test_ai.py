@@ -17,6 +17,8 @@ args = parser.parse_args()
 print(f'batch size: {args.batch_size}')
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
+# add an mps backend here for macbook m5 silicon
+
 batch_size = int(args.batch_size)
 block_size = 128
 max_iters = 200
