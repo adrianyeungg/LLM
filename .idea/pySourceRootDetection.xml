@@ -4,6 +4,7 @@
     <option name="sourcePathsSet">
       <set>
         <option value="$PROJECT_DIR$/PythonTesting/fcc-gpt-course/cuda/lib/python3.14/site-packages" />
+        <option value="$PROJECT_DIR$/PythonTesting/gpt/cuda/lib/python3.14/site-packages" />
       </set>
     </option>
   </component>
