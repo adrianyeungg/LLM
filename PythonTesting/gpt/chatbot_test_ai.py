@@ -5,6 +5,7 @@ import mmap
 import random
 import pickle
 import argparse
+import io
 
 parser = argparse.ArgumentParser(description='This is a demonstration program')
 
@@ -186,19 +187,46 @@ class GPTLanguageModel(nn.Module):
             index = torch.cat((index, index_next), dim=1) # (B, T+1)
         return index
 
-model = GPTLanguageModel(vocab_size)
-print('thinking')
-with open('model-01.pkl', 'rb') as f:
-    model = pickle.load(f)
-print('ready')
-m = model.to(device)
+#model = GPTLanguageModel(vocab_size)
+#print('thinking')
+#with open('model-01.pkl', 'rb') as f:
+#    model = pickle.load(f)
+#print('ready')
+#m = model.to(device)
+
+
+class unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == "torch.storage" and name == "_load_from_bytes":
+            return lambda b: torch.load(
+                io.BytesIO(b),
+                map_location="cpu",
+                weights_only=False
+            )
+        return super().find_class(module, name)
+
+
+device = torch.device(
+    "mps" if torch.backends.mps.is_available() else "cpu"
+)
+
+print("thinking")
+
+with open("model-01.pkl", "rb") as f:
+    model = unpickler(f).load()
+
+print("ready")
+
+model = model.to(device)
+model.eval()
+
 
 
 
 while True:
     prompt = input("type here:\n")
     context = torch.tensor(encode(prompt), dtype=torch.long, device=device)
-    generated_chars = decode(m.generate(context.unsqueeze(0), max_new_tokens=150)[0].tolist())
+    generated_chars = decode(model.generate(context.unsqueeze(0), max_new_tokens=150)[0].tolist())
     print(f'Completion:\n{generated_chars}')
 
 # make a function here to quit the llm if done
