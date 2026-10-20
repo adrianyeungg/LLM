@@ -5,6 +5,7 @@ import concurrent.futures
 
 def process_file(args):
     directory, filename, output_file, vocab = args
+    # directory = "/Users/lauwan/PycharmProjects/LLM/PythonTesting/gpt/training_data"
     file_path = os.path.join(directory, filename)
     print(f"Processing file: {file_path}")  # Debug statement
     try:
@@ -32,7 +33,7 @@ def process_files_in_parallel(files, folder_path, output_file):
     return vocab
 
 if __name__ == '__main__':
-    folder_path = "C:\\Users\\yeung\\PYCHARM PROJECTS\\Quant Projects\\LLM\\PythonTesting\\fcc-gpt-2-course\\openwebtext".replace("\\", "/")
+    folder_path = "/Users/lauwan/PycharmProjects/LLM/PythonTesting/gpt/openwebtext".replace("\\", "/")
     output_file_train = "output_train.txt"
     output_file_val = "output_val.txt"
     vocab_file = "vocab.txt"

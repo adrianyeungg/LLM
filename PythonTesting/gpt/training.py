@@ -5,6 +5,8 @@ import mmap
 import random
 import pickle
 import argparse
+from kagglehub import *
+import io
 
 parser = argparse.ArgumentParser(description='This is a demonstration program')
 
@@ -15,7 +17,13 @@ args = parser.parse_args()
 
 # Now we can use the argument value in our program.
 print(f'batch size: {args.batch_size}')
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+if torch.cuda.is_available():
+    device = 'cuda'
+elif torch.backends.mps.is_available():
+    device = 'mps'
+else:
+    device = 'cpu'
+print(f'device: {device}')
 
 batch_size = int(args.batch_size)
 block_size = 128
@@ -224,13 +232,34 @@ class GPTLanguageModel(nn.Module):
             index = torch.cat((index, index_next), dim=1) # (B, T+1)
         return index
 
-model = GPTLanguageModel(vocab_size)
-print('loading')
-with open('model-01.pkl', 'rb') as f:
-    model = pickle.load(f)
-print('ready')
-m = model.to(device)
+# model = GPTLanguageModel(vocab_size)
+# print('loading')
+# with open('model-01.pkl', 'rb') as f:
+#     model = pickle.load(f)
+# print('ready')
+# m = model.to(device)
 
+class unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == "torch.storage" and name == "_load_from_bytes":
+            return lambda b: torch.load(
+                io.BytesIO(b),
+                map_location="cpu",
+                weights_only=False
+            )
+        return super().find_class(module, name)
+
+device = torch.device(
+    "mps" if torch.backends.mps.is_available() else "cpu")
+
+
+with open("model-01.pkl", "rb") as f:
+    model = unpickler(f).load()
+
+print("ready")
+
+model = model.to(device)
+model.eval()
 
 # create a PyTorch optimizer
 optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
@@ -255,7 +284,10 @@ with open('model-01.pkl', 'wb') as f:
     pickle.dump(model, f)
 print('model saved')
 
+# kaggle call
+path = kagglehub.dataset_download("sibamsamanta07/130k-steam-games-prices-tags-reviews-ccu")
 
+print("Path to dataset files:", path)
 # have a function in data-extract and a call function here in training to pull from the web (web scraping)
 
 # have some sort of graph to show learning rate?

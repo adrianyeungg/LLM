@@ -16,8 +16,13 @@ args = parser.parse_args()
 
 # Now we can use the argument value in our program.
 print(f'batch size: {args.batch_size}')
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
+if torch.cuda.is_available():
+    device = 'cuda'
+elif torch.backends.mps.is_available():
+    device = 'mps'
+else:
+    device = 'cpu'
+print(f'device: {device}')
 # add a mps backend here for macbook m5 silicon
 
 batch_size = int(args.batch_size)
@@ -205,7 +210,6 @@ class unpickler(pickle.Unpickler):
             )
         return super().find_class(module, name)
 
-
 device = torch.device(
     "mps" if torch.backends.mps.is_available() else "cpu"
 )
@@ -219,9 +223,6 @@ print("ready")
 
 model = model.to(device)
 model.eval()
-
-
-
 
 while True:
     prompt = input("type here:\n")
