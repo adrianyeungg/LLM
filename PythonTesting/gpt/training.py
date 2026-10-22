@@ -5,18 +5,17 @@ import mmap
 import random
 import pickle
 import argparse
-from kagglehub import *
 import io
 
 parser = argparse.ArgumentParser(description='This is a demonstration program')
 
 # Here we add an argument to the parser, specifying the expected type, a help message, etc.
-parser.add_argument('-batch_size', type=str, required=True, help='type in a batch_size')
+# parser.add_argument('-batch_size', type=str, required=True, help='type in a batch_size')
 
-args = parser.parse_args()
+# args = parser.parse_args()
 
 # Now we can use the argument value in our program.
-print(f'batch size: {args.batch_size}')
+# print(f'batch size: {args.batch_size}')
 if torch.cuda.is_available():
     device = 'cuda'
 elif torch.backends.mps.is_available():
@@ -25,7 +24,8 @@ else:
     device = 'cpu'
 print(f'device: {device}')
 
-batch_size = int(args.batch_size)
+# batch_size = int(args.batch_size)
+batch_size = 32
 block_size = 128
 max_iters = 500
 learning_rate = 1e-3 # typical learning rate is this
@@ -33,7 +33,7 @@ eval_iters = 100
 n_embd = 384
 n_head = 1
 n_layer = 1
-dropout = 0.2
+dropout = 0.1
 
 print(device)
 
@@ -285,9 +285,8 @@ with open('model-01.pkl', 'wb') as f:
 print('model saved')
 
 # kaggle call
-path = kagglehub.dataset_download("sibamsamanta07/130k-steam-games-prices-tags-reviews-ccu")
 
-print("Path to dataset files:", path)
+
 # have a function in data-extract and a call function here in training to pull from the web (web scraping)
 
 # have some sort of graph to show learning rate?

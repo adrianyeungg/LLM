@@ -7,15 +7,15 @@ import pickle
 import argparse
 import io
 
-parser = argparse.ArgumentParser(description='This is a demonstration program')
+# parser = argparse.ArgumentParser(description='This is a demonstration program')
 
 # Here we add an argument to the parser, specifying the expected type, a help message, etc.
-parser.add_argument('-batch_size', type=str, required=True, help='type in a batch_size')
+# parser.add_argument('-batch_size', type=str, required=True, help='type in a batch_size')
 
-args = parser.parse_args()
+# args = parser.parse_args()
 
 # Now we can use the argument value in our program.
-print(f'batch size: {args.batch_size}')
+# print(f'batch size: {args.batch_size}')
 if torch.cuda.is_available():
     device = 'cuda'
 elif torch.backends.mps.is_available():
@@ -25,7 +25,8 @@ else:
 print(f'device: {device}')
 # add a mps backend here for macbook m5 silicon
 
-batch_size = int(args.batch_size)
+# batch_size = int(args.batch_size)
+batch_size = 32
 block_size = 128
 max_iters = 200
 learning_rate = 3e-4
@@ -227,8 +228,8 @@ model.eval()
 while True:
     prompt = input("type here:\n")
     context = torch.tensor(encode(prompt), dtype=torch.long, device=device)
-    generated_chars = decode(model.generate(context.unsqueeze(0), max_new_tokens=150)[0].tolist())
-    print(f'Completion:\n{generated_chars}')
+    generated_chars = decode(model.generate(context.unsqueeze(0), max_new_tokens=200)[0].tolist())
+    print(f'response:\n{generated_chars}')
 
 # make a function here to quit the llm if done
 # for now just ctrl-c
