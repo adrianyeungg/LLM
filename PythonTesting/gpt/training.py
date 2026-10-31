@@ -1,11 +1,14 @@
 import torch
 import torch.nn as nn
+from sympy import python
 from torch.nn import functional as F
 import mmap
 import random
 import pickle
 import argparse
 import io
+import torch.utils.benchmark as benchmark
+import nsight
 
 parser = argparse.ArgumentParser(description='This is a demonstration program')
 
@@ -27,12 +30,12 @@ print(f'device: {device}')
 # batch_size = int(args.batch_size)
 batch_size = 32
 block_size = 128
-max_iters = 500
+max_iters = 1000
 learning_rate = 1e-3 # typical learning rate is this
-eval_iters = 100
+eval_iters = 1000
 n_embd = 384
-n_head = 1
-n_layer = 1
+n_head = 28
+n_layer = 28
 dropout = 0.1
 
 print(device)
@@ -231,6 +234,9 @@ class GPTLanguageModel(nn.Module):
             # append sampled index to the running sequence
             index = torch.cat((index, index_next), dim=1) # (B, T+1)
         return index
+
+if __name__ == '__main__':
+    model = torch.load('model-01.pkl')
 
 # model = GPTLanguageModel(vocab_size)
 # print('loading')

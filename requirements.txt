@@ -411,3 +411,4 @@ zstandard @ file:///C:/miniconda3/conda-bld/zstandard_1758189089298/work
 
 torch
 kagglehub
+nsight

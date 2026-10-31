@@ -14,7 +14,6 @@ import io
 
 # args = parser.parse_args()
 
-# Now we can use the argument value in our program.
 # print(f'batch size: {args.batch_size}')
 if torch.cuda.is_available():
     device = 'cuda'
@@ -28,9 +27,9 @@ print(f'device: {device}')
 # batch_size = int(args.batch_size)
 batch_size = 32
 block_size = 128
-max_iters = 200
-learning_rate = 3e-4
-eval_iters = 100
+max_iters = 500
+learning_rate = 1e-3
+eval_iters = 200
 n_embd = 384
 n_head = 1
 n_layer = 1
