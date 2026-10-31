@@ -8,7 +8,6 @@ import pickle
 import argparse
 import io
 import torch.utils.benchmark as benchmark
-import nsight
 
 parser = argparse.ArgumentParser(description='This is a demonstration program')
 
