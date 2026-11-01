@@ -254,8 +254,8 @@ class unpickler(pickle.Unpickler):
             )
         return super().find_class(module, name)
 
-device = torch.device(
-    "mps" if torch.backends.mps.is_available() else "cpu")
+#device = torch.device(
+#    "mps" if torch.backends.mps.is_available() else "cpu")
 
 
 with open("model-01.pkl", "rb") as f:
