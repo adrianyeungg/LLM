@@ -1,0 +1,4 @@
+performance metrics for llm
+
+11/3/2026: cuda.Event = 0.07177600264549255 ms
+		   loss: 3.545414924621582

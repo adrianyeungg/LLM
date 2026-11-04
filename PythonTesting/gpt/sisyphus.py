@@ -26,14 +26,14 @@ print(f'device: {device}')
 
 # batch_size = int(args.batch_size)
 batch_size = 32
-block_size = 128
-max_iters = 500
-learning_rate = 1e-3
-eval_iters = 200
-n_embd = 384
-n_head = 1
-n_layer = 1
-dropout = 0.2
+block_size = 128 # anything higher than this will give error (out of bounds for cuda)
+max_iters = 10000 # changed from 1000 to 10k ->
+learning_rate = 1e-3 # typical learning rate is this
+eval_iters = 10000 # changed from 1000 to 10k ->
+n_embd = 768
+n_head = 128
+n_layer = 28
+dropout = 0.1
 
 print(device)
 

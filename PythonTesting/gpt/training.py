@@ -26,15 +26,18 @@ else:
     device = 'cpu'
 print(f'device: {device}')
 
+start_event = torch.cuda.Event(enable_timing=True)
+end_event = torch.cuda.Event(enable_timing=True)
+
 # batch_size = int(args.batch_size)
-batch_size = 32
-block_size = 128
-max_iters = 1000
+batch_size = 64 # GPU hardware utilization, changed from 32
+block_size = 128 # anything higher than this will give error (out of bounds for cuda) -> reduce batch size? this is memory usage (this is the linearity computation)
+max_iters = 10000 # changed from 1000 to 10k ->
 learning_rate = 1e-3 # typical learning rate is this
-eval_iters = 1000
-n_embd = 384
-n_head = 28
-n_layer = 28
+eval_iters = 10000 # changed from 1000 to 10k ->
+n_embd = 768
+n_head = 128
+n_layer = 48
 dropout = 0.1
 
 print(device)
@@ -201,7 +204,7 @@ class GPTLanguageModel(nn.Module):
         
         
         # idx and targets are both (B,T) tensor of integers
-        tok_emb = self.token_embedding_table(index) # (B,T,C)
+        tok_emb = self.token_embedding_table(index) # (B,T,C) #index
         pos_emb = self.position_embedding_table(torch.arange(T, device=device)) # (T,C)
         x = tok_emb + pos_emb # (B,T,C)
         x = self.blocks(x) # (B,T,C)
@@ -234,8 +237,13 @@ class GPTLanguageModel(nn.Module):
             index = torch.cat((index, index_next), dim=1) # (B, T+1)
         return index
 
-if __name__ == '__main__':
-    model = torch.load('model-01.pkl')
+
+start_event.record()
+end_event.record()
+torch.cuda.synchronize()
+
+#if __name__ == '__main__':
+#    model = torch.load('model-01.pkl')
 
 # model = GPTLanguageModel(vocab_size)
 # print('loading')
@@ -288,6 +296,10 @@ print(loss.item())
 with open('model-01.pkl', 'wb') as f:
     pickle.dump(model, f)
 print('model saved')
+
+elapsed_time_ms = start_event.elapsed_time(end_event)
+print(f'time: {elapsed_time_ms} ms')
+
 
 # kaggle call
 
